@@ -10,12 +10,14 @@ import { Pokemon } from "./entities/pokemon.entity";
 import { Model, isValidObjectId } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { PaginationDto } from "src/common/dto/pagination.dto";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class PokemonService {
   constructor(
     @InjectModel(Pokemon.name)
-    private readonly pokemonModel: Model<Pokemon>
+    private readonly pokemonModel: Model<Pokemon>,
+    private readonly configService: ConfigService
   ) {}
 
   async create(createPokemonDto: CreatePokemonDto) {
@@ -36,7 +38,7 @@ export class PokemonService {
       .limit(limit)
       .skip(offset)
       .sort({ no: 1 })
-      .select({  __v: 0 });
+      .select({ __v: 0 });
   }
 
   async findOne(term: string) {
